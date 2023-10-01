@@ -1,3 +1,47 @@
-.mainBlock, div, label{
-    background-color: aquamarine;
+form{
+    margin: auto;
+    max-width: 25%;
+    height: fit-content;
+    background-color: #385E3C;   
+    border-radius: 15px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+    box-shadow: black 0px 4px 12px;
 }
+h1{
+    margin-left: 33%;
+    padding-top:2%;
+}
+
+ input, label{
+    width:75%;
+    margin-left: 12%;
+    margin-bottom: 3%;
+    font-size: larger;
+   
+} 
+ button {
+    margin-top: 10%;
+    margin-bottom:10%;
+    margin-left:37%;
+    width: fit-content;
+    height: 40px;
+    font-size: larger;
+    color: white;
+    border-color: white;
+    background-color: #385E3C;
+    border-radius: 5px;
+    
+}
+button:hover {
+    background-color: white;
+    color: #385E3C;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+@media only screen and (max-width: 600px) {
+   form,input{
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
