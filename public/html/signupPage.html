@@ -8,20 +8,20 @@
 </head>
 <body>
     <div class="mainBlock">
-        <form id="signup" class="mainBlock"> 
+        <form id="signup" class="mainBlock" method="post" action="/signup"> 
        <h1>Sign Up</h1>
         <label>Name</label>
-        <input type="text" id="name"><br>
+        <input type="text" id="name" value="Aniket"><br>
         <label>Email</label>
-        <input type="text" id="email"><br>
+        <input type="text" id="email" value="ingawale3765@gmail.com"><br>
         <label>Phone number</label>
-        <input type="number" id="phoneNumber"><br>
+        <input type="number" id="phoneNumber" value="7057606229"><br>
         <label>Password</label>
-        <input type="password" id="password"><br>
-        <button type="submit" id="signupButton">Sign Up</button>
+        <input type="password" id="password" value="123"><br>
+        <button type="button" id="signupButton">Sign Up</button>
     </form>
     </div>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/signupPage.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 </html>

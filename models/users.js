@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
+const { use } = require('../route/router');
 
 const users = sequelize.define('users',{
     id:{
@@ -27,3 +28,5 @@ const users = sequelize.define('users',{
         allowNull:false
     },
 });
+
+module.exports = users
