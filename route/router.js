@@ -5,6 +5,8 @@ const router = express();
 
 router.use(express.json());
 router.get('/',controller.loginPage);
-router.post('/signup',controller.signup);
+router.get('/signup',controller.signupPage);
+router.post('/creatUser',controller.signup);
+router.post('/login',controller.login)
 
 module.exports = router;

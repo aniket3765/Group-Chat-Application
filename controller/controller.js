@@ -2,10 +2,35 @@ const express = require('express');
 const users = require('../models/users');
 const bcrypt = require('bcryptjs');
 const { use } = require('../route/router');
+const jwt = require('jsonwebtoken')
+const secretKey = process.env.secretKey;
+require('dotenv').config();
 
-exports.loginPage = (req,res)=>{
+exports.signupPage = (req,res)=>{
     res.sendFile(process.cwd() + '/public/html/signupPage.html')
 }
+
+exports.loginPage = (req,res)=>{
+    res.sendFile(process.cwd() + '/public/html/loginPage.html')
+}
+
+exports.login = async (req, res)=> {
+    const findUser = await users.findOne({where:{name:req.body.name}});
+    if(findUser == undefined){
+      return  res.status(404).json({message:'userName'});
+    }
+    else{
+        const user = findUser.dataValues;
+        const isPasswordValid = await bcrypt.compare(req.body.password,user.password);
+        if(isPasswordValid) 
+        {
+            const token = jwt.sign({userId:user.id,name:user.name},secretKey);
+            res.status(200).json({token:token});
+         }
+         else res.status(401).json({message:'password'});
+    }
+}
+
 
 exports.signup = async (req, res) => {
 console.log(req.body)

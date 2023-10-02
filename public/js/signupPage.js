@@ -8,7 +8,8 @@ const password = document.getElementById('password');
 document.getElementById('signupButton').addEventListener('click',createUser);
 
 function createUser(){
-    axios.post('/signup',{name:name.value, email:email.value, phoneNumber:phoneNumber.value,password:password.value})
+    if (name.value=='' || email.value=="" || phoneNumber.value=="" || password.value=="") return alert("Enter details")
+    axios.post('/creatUser',{name:name.value, email:email.value, phoneNumber:phoneNumber.value,password:password.value})
     .then(res=> {
         if(res.status == 200) alert('User created')
         else  alert('User already exist')

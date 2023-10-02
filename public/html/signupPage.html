@@ -8,17 +8,17 @@
 </head>
 <body>
     <div class="mainBlock">
-        <form id="signup" class="mainBlock" method="post" action="/signup"> 
+        <form id="signup" class="mainBlock" method="post" action="/creatUser"> 
        <h1>Sign Up</h1>
         <label>Name</label>
-        <input type="text" id="name" value="Aniket"><br>
+        <input type="text" id="name" required><br>
         <label>Email</label>
-        <input type="text" id="email" value="ingawale3765@gmail.com"><br>
+        <input type="text" id="email" required><br>
         <label>Phone number</label>
-        <input type="number" id="phoneNumber" value="7057606229"><br>
+        <input type="number" id="phoneNumber" required><br>
         <label>Password</label>
-        <input type="password" id="password" value="123"><br>
-        <button type="button" id="signupButton">Sign Up</button>
+        <input type="password" id="password" required><br>
+        <button type="submit" id="signupButton">Sign Up</button>
     </form>
     </div>
 </body>
