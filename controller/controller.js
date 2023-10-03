@@ -67,3 +67,8 @@ exports.addMessage = (req, res) => {
     userId:token.userId
   }).then(result => { res.status(200).json({message:'success'}) }).catch(res => {res.status(201).json({error:res})})  
 }
+
+exports.allMessages = async (req, res)=> {
+  const allMessages = await messages.findAll();
+  res.status(200).json(allMessages);
+}

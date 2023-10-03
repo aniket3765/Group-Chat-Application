@@ -5,9 +5,18 @@ document.getElementById('send').addEventListener('click',addMessage);
 
 const token = localStorage.getItem('token');
 
-function addMessageToScreen (message){
+function allMessages (){
+    axios.get('/allMessages')
+    .then(res => {
+       res.data.forEach(e => addMessageToScreen(e.userId,e.message));
+    })
+}
+
+allMessages();
+
+function addMessageToScreen (user,message){
     let p = document.createElement('p');
-    p.innerHTML = message;
+    p.innerHTML = user+" : "+message;
     document.getElementById('chatBlock').appendChild(p);
 }
 
@@ -15,7 +24,7 @@ function addMessage(){
     if(message.value == "") return alert('empty message!');
     axios.post('/addMessage',{message:message.value, token:token})
     .then(res=> {
-        if(res.status == 200) addMessageToScreen(message.value);
+        if(res.status == 200) addMessageToScreen('you',message.value);
         else alert('something went wrong');
     }).catch(err => console.log(err))
 }
