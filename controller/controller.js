@@ -29,7 +29,8 @@ exports.login = async (req, res)=> {
         const isPasswordValid = await bcrypt.compare(req.body.password,user.password);
         if(isPasswordValid) 
         {
-            const token = jwt.sign({userId:user.id,name:user.name},secretKey);
+          console.log(user)
+            const token = jwt.sign({userId:user.id,name:user.Name},secretKey);
             res.status(200).json({token:token});
          }
          else res.status(401).json({message:'password'});
@@ -61,14 +62,15 @@ jwtToken = (token) =>{
 
 exports.addMessage = (req, res) => {
   const token = jwtToken(req.body.token);
-
+console.log(token)
   messages.create({
     message:req.body.message,
+    userName:token.name,
     userId:token.userId
   }).then(result => { res.status(200).json({message:'success'}) }).catch(res => {res.status(201).json({error:res})})  
 }
 
 exports.allMessages = async (req, res)=> {
   const allMessages = await messages.findAll();
-  res.status(200).json(allMessages);
+  res.status(200).json(allMessages.reverse());
 }

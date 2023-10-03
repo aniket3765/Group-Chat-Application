@@ -14,7 +14,8 @@ function login(){
     axios.post('/login',{name:name.value, password:password.value})
     .then(res =>{
       localStorage.setItem('token',res.data.token);
-      window.location.href = `window`; 
+     
+      window.location.href = `${window.location.origin}/home`; 
 }).catch(res =>{
     if(res.response.status == 404) return alert('Incorrect Username');
        else if(res.response.status == 401) return alert('Incorrect password');
