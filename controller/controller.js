@@ -14,6 +14,10 @@ exports.loginPage = (req,res)=>{
     res.sendFile(process.cwd() + '/public/html/loginPage.html')
 }
 
+exports.chatPage = (req, res) =>{
+  res.sendFile(process.cwd() + '/public/html/chatPage.html');
+}
+
 exports.login = async (req, res)=> {
     const findUser = await users.findOne({where:{name:req.body.name}});
     if(findUser == undefined){

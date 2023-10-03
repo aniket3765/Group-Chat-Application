@@ -7,6 +7,7 @@ router.use(express.json());
 router.get('/',controller.loginPage);
 router.get('/signup',controller.signupPage);
 router.post('/creatUser',controller.signup);
-router.post('/login',controller.login)
+router.post('/login',controller.login);
+router.get('/home',controller.chatPage);
 
 module.exports = router;

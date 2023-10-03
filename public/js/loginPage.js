@@ -7,11 +7,14 @@ const password = document.getElementById('password');
 
 document.getElementById('loginButton').addEventListener('click',login)
 
+localStorage.clear();
+
 function login(){
     if (name.value=="" || password.value=="") return alert("Enter details");
     axios.post('/login',{name:name.value, password:password.value})
     .then(res =>{
-       return localStorage.setItem('token',res.data.token);
+      localStorage.setItem('token',res.data.token);
+      window.location.href = `window`; 
 }).catch(res =>{
     if(res.response.status == 404) return alert('Incorrect Username');
        else if(res.response.status == 401) return alert('Incorrect password');
