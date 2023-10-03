@@ -9,5 +9,6 @@ router.get('/signup',controller.signupPage);
 router.post('/creatUser',controller.signup);
 router.post('/login',controller.login);
 router.get('/home',controller.chatPage);
+router.post('/addMessage',controller.addMessage)
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require('express');
 const users = require('../models/users');
+const messages = require('../models/messages');
 const bcrypt = require('bcryptjs');
 const { use } = require('../route/router');
 const jwt = require('jsonwebtoken')
@@ -52,4 +53,17 @@ console.log(req.body)
     else{
         res.status(201).json({message:'User already exist'})
     }
+}
+
+jwtToken = (token) =>{
+  return jwt.verify(token,secretKey);
+}
+
+exports.addMessage = (req, res) => {
+  const token = jwtToken(req.body.token);
+
+  messages.create({
+    message:req.body.message,
+    userId:token.userId
+  }).then(result => { res.status(200).json({message:'success'}) }).catch(res => {res.status(201).json({error:res})})  
 }

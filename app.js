@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const router = require('./route/router');
 const users = require('./models/users');
+const messages = require('./models/messages');
 const sequelize = require('./util/database');
 const cors = require('cors');
 
@@ -13,4 +14,9 @@ app.use(cors({
 app.use(router)
 app.use(express.static('public'));
 
-sequelize.sync().then(result => {app.listen(3000)}).catch(err=> {console.log(err)})
+users.hasMany(messages);
+messages.belongsTo(users);
+
+sequelize.sync()
+.then(result => {app.listen(3000)})
+.catch(err=> {console.log(err)})
