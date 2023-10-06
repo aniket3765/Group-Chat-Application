@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const router = require('./route/router');
 const users = require('./models/users');
 const messages = require('./models/messages');
+const groupMembers = require('./models/groupMembers');
 const sequelize = require('./util/database');
 const cors = require('cors');
 
@@ -16,6 +17,12 @@ app.use(express.static('public'));
 
 users.hasMany(messages);
 messages.belongsTo(users);
+
+users.hasMany(groupMembers);
+groupMembers.belongsTo(users);
+
+
+
 
 sequelize.sync()
 .then(result => {app.listen(3000)})

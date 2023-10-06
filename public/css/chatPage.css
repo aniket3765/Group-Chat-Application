@@ -3,24 +3,16 @@ body{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .mainBlock{
-  margin: auto;
-  width: 50%;
-  height: 500px;
-  padding: 10px;
+  width: 100%;
+  height: 550px;
+  background-color: aqua;
+  display: inline-block;
   
 }
 
-#chatBlock{
-    margin: auto;
-  width: 100%;
-  height: 450px;
-  background-color: #ccc;
-  /* box-shadow: black 0px 4px 12px; */
-}
 #inputBlock {
-    margin: 10px;
-    margin-left:auto ;
-    margin-right:auto ;
+  margin: auto;
+    margin-right: 10px;
     width: 50%;
   height: 40px;
   align-items: center;
@@ -29,9 +21,21 @@ body{
     box-shadow: #ccc 0px 4px 12px;
     resize: both;
     border-radius:10px ;
-    width: 70%;
+    width: 50%;
     height: 25px;
 }
+
+#grupName {
+display: none;
+}
+
+#groupBlock{
+  background-color: black;
+  min-width: 40%;
+  height: 450px;
+  display: inline-block;
+}
+
 #send{
     height: 30px;
     border-radius:10px ;
@@ -40,12 +44,9 @@ body{
 }
 
 #chatBlock{
-    margin: auto;
-    width: 100%;
-    border-radius: 10px;
-    background-color: #385E3C;
-    list-style-position: inside;
-    overflow: scroll;
-  height: 500px;
- color: #f1f1f1;
+ position: fixed;
+  max-width: 50%;
+  height: 400px;
+  background-color: #385E3C;
+  display: inline-block;
 }

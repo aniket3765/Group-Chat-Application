@@ -9,6 +9,10 @@ const messages = sequelize.define('messages',{
     userName:{
         type:Sequelize.STRING,
         allowNull:false
+    },
+    groupName:{
+        type:Sequelize.STRING,
+        allowNull:false
     }
 })
 
