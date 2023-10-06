@@ -3,7 +3,9 @@ const users = require('../models/users');
 const messages = require('../models/messages');
 const bcrypt = require('bcryptjs');
 const { use } = require('../route/router');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const sequelize = require('../util/database');
+const Sequelize = require('sequelize');
 const secretKey = process.env.secretKey;
 require('dotenv').config();
 
@@ -71,6 +73,10 @@ console.log(token)
 }
 
 exports.allMessages = async (req, res)=> {
-  const allMessages = await messages.findAll();
-  res.status(200).json(allMessages.reverse());
+  console.log(req.body)
+  const allMessages = await messages
+  .findAll({where:{
+    id:{[Sequelize.Op.gt]:req.body.id}
+  }});
+  res.status(200).json(allMessages);
 }
