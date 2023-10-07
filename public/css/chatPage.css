@@ -5,7 +5,7 @@ body{
 .mainBlock{
   width: 100%;
   height: 550px;
-  background-color: aqua;
+  background-color: #ccc;
   display: inline-block;
   
 }
@@ -15,7 +15,6 @@ body{
     margin-right: 10px;
     width: 50%;
   height: 40px;
-  align-items: center;
 }
 #messageBlock {
     box-shadow: #ccc 0px 4px 12px;
@@ -23,18 +22,14 @@ body{
     border-radius:10px ;
     width: 50%;
     height: 25px;
+    align-items: baseline;
 }
 
 #grupName {
 display: none;
 }
 
-#groupBlock{
-  background-color: black;
-  min-width: 40%;
-  height: 450px;
-  display: inline-block;
-}
+
 
 #send{
     height: 30px;
@@ -44,9 +39,27 @@ display: none;
 }
 
 #chatBlock{
- position: fixed;
-  max-width: 50%;
-  height: 400px;
-  background-color: #385E3C;
-  display: inline-block;
+  width: 40%;
+  height: 500px;
+  background-color:  #385E3C;;
+  margin-top: -522px;
+  margin-left:60% ;
+}
+
+input[type=submit]{
+  width:100%;
+  height:50px
+}
+
+#groupBlock, #userBlock{
+  background-color:  #385E3C;;
+  width: 40%;
+  height: 500px;
+  color: white;
+}
+#userBlock{
+  background-color:  #385E3C;;
+  margin-top:-500px ;
+  position: fixed;
+  display: none;
 }
