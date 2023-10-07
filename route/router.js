@@ -14,6 +14,8 @@ router.post('/allMessages',controller.allMessages);
 router.get('/allUsers',controller.allUsers);
 router.post('/createGroup',controller.creatGroup);
 router.post('/allGroups',controller.allGroups);
-router.post('/addUserToGroup',controller.addUserToGroup)
+router.post('/addUserToGroup',controller.addUserToGroup);
+router.post('/allGroupUsers',controller.allGroupUsers);
+router.post('/removeUser',controller.removeUser)
 
 module.exports = router;

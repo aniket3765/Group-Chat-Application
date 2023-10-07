@@ -57,7 +57,7 @@ input[type=submit]{
   height: 500px;
   color: white;
 }
-#userBlock{
+#userBlock, #groupUsers{
   background-color:  #385E3C;;
   margin-top:-500px ;
   position: fixed;

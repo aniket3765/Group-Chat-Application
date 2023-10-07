@@ -136,3 +136,26 @@ exports.addUserToGroup = async (req, res) => {
     else res.status(201).json({ msg: "You are not admin" });
   });
 }
+
+exports.allGroupUsers = (req, res) => {
+ const token = jwtToken(req.body.token);
+ group.findAll({
+  where:{
+    groupName:req.body.groupName
+  },
+  attributes:['userName']
+ }).then(result => res.json(result))
+}
+
+exports.removeUser = async (req, res)=> {
+const token = jwtToken(req.body.token);
+const admin = await findUserInGroup(token.name, req.body.groupName);
+if(admin.dataValues.isAdmin){
+  group.destroy({
+    where:{
+      groupName:req.body.groupName,
+      userName:req.body.userName
+    }
+  }).then(result => res.status(200).json({msg:'deleted'}))}
+  else res.json({msg:'you are not admin'})
+}

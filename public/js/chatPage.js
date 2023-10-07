@@ -2,7 +2,7 @@ axios.defaults.headers.common['X-Auth-Token'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
 
 const message = document.getElementById('messageBlock');
 document.getElementById('send').addEventListener('click', addMessage);
-document.getElementById('newGroup').addEventListener('click', addUsers);
+document.getElementById('newGroup').addEventListener('click', ()=>{document.getElementById("userBlock").style.display = 'block'});
 document.getElementById('createGroup').addEventListener('click', createGroup)
 const groupName = document.getElementById('groupName');
 const chatBlock = document.getElementById('chatBlock');
@@ -11,8 +11,8 @@ document.getElementById('close').addEventListener('click', () => { document.getE
 document.getElementById('logout').addEventListener('click', () => { window.location = window.location.origin })
 document.getElementById('groups').addEventListener('click', swicthGroup);
 document.getElementById('users').addEventListener('click', addUserToGroup);
-const token = localStorage.getItem('token');
 
+const token = localStorage.getItem('token');
 
 async function allMessages(group) {
     let messageArray = [];
@@ -55,7 +55,7 @@ function addMessageToScreen(user, message) {
 }
 
 function addElements(parent, data) {
-    let li = document.createElement('input');
+  let  li = document.createElement('input');
     li.setAttribute('type', 'submit');
     li.setAttribute('value', data);
     document.getElementById(parent).appendChild(li);
@@ -81,13 +81,43 @@ function swicthGroup(e) {
     currentGroupName = e.target.value;
     localStorage.setItem('currentGroupName', e.target.value);
     allMessages(currentGroupName);
+    console.log(currentGroupName !== 'CommonGroup')
+    if(currentGroupName !== 'CommonGroup'){
+        document.getElementById('userEdit').innerHTML = ''
+        const addUserButton = document.createElement('input');
+        addUserButton.setAttribute('id','addUserButton');
+        addUserButton.setAttribute('type','button');
+        addUserButton.setAttribute('value','Add User')
+        const removeUserButton = document.createElement('input');
+        removeUserButton.setAttribute('id','removeUserButton');
+        removeUserButton.setAttribute('type','button');
+        removeUserButton.setAttribute('value','Remove User')
+        document.getElementById('userEdit').appendChild(addUserButton);
+        document.getElementById('userEdit').appendChild(removeUserButton);
+        document.getElementById('addUserButton').addEventListener('click',allUsers);
+        document.getElementById('removeUserButton').addEventListener('click',allGroupUsers);
+    }
+    else document.getElementById('userEdit').innerHTML = '';
 }
 
 
-function addUsers() {
-    document.getElementById("userBlock").style.display = 'block';
+function allGroupUsers() {
+    
+    document.getElementById("groups").innerHTML = ''
+        axios.post('/allGroupUsers',{token:token, groupName:currentGroupName})
+       .then(res => res.data.forEach(e => {  
+       addElements('groupUsers',e.userName);
+    }));
+        document.getElementById("groupUsers").style.display = 'block'
+        document.getElementById("groupUsers").addEventListener('click',removeUser)
+
+}
+
+function allUsers() {
+    
     axios.get('/allUsers').then(res => {
         res.data.forEach(e => addElements('users', e.Name));
+        document.getElementById("userBlock").style.display = 'block'
     })
 }
 
@@ -100,4 +130,8 @@ allGroups();
 
 function addUserToGroup(e) {
     axios.post('/addUserToGroup', { token: token, userName: e.target.value, groupName: currentGroupName });
+}
+
+function removeUser(e) {
+    axios.post('/removeUser',{token:token, groupName:currentGroupName, userName:e.target.value})
 }
