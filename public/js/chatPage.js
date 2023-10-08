@@ -1,4 +1,6 @@
+import {io} from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 axios.defaults.headers.common['X-Auth-Token'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
 
 const message = document.getElementById('messageBlock');
 document.getElementById('send').addEventListener('click', addMessage);
@@ -13,6 +15,13 @@ document.getElementById('groups').addEventListener('click', swicthGroup);
 document.getElementById('users').addEventListener('click', addUserToGroup);
 
 const token = localStorage.getItem('token');
+
+const socket = io('http://localhost:3000/');
+
+socket.on('receiveMessage' ,message => {
+    console.log("message**********")
+   allMessages(currentGroupName);
+})
 
 async function allMessages(group) {
     let messageArray = [];
@@ -61,13 +70,14 @@ function addElements(parent, data) {
     document.getElementById(parent).appendChild(li);
 }
 
-function addMessage() {
+async function addMessage() {
     if (message.value == "") return alert('empty message!');
-    axios.post('/addMessage', { groupName: currentGroupName, message: message.value, token: token })
+    await axios.post('/addMessage', { groupName: currentGroupName, message: message.value, token: token })
         .then(res => {
             if (res.status == 200) return null
             else alert('something went wrong');
         }).catch(err => console.log(err))
+        socket.emit('sendMessage',message.value);
     message.value = '';
 }
 

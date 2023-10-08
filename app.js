@@ -7,9 +7,19 @@ const messages = require('./models/messages');
 const groupMembers = require('./models/groupMembers');
 const sequelize = require('./util/database');
 const cors = require('cors');
+const server = require('http').createServer(app)
+const io = require('socket.io')(server);
+
+
+io.on('connection', socket => {
+    console.log(socket.id);
+    socket.on('sendMessage',message =>{
+        io.emit('receiveMessage',message)
+    })
+})
 
 app.use(cors({
-    origin: "http://127.0.0.1:5000/"
+    origin:[ "http://localhost:3000/"]
 }))
 
 app.use(router)
@@ -25,5 +35,5 @@ groupMembers.belongsTo(users);
 
 
 sequelize.sync()
-.then(result => {app.listen(3000)})
+.then(result => {server.listen(3000)})
 .catch(err=> {console.log(err)})
