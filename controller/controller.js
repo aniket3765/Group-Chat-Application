@@ -1,13 +1,13 @@
-const express = require('express');
 const users = require('../models/users');
 const messages = require('../models/messages');
-const group = require('../models/groupMembers');
+const groups = require('../models/groups');
+const groupMembers = require('../models/groupMembers')
 const bcrypt = require('bcryptjs');
-const { use } = require('../route/router');
 const jwt = require('jsonwebtoken');
-const sequelize = require('../util/database');
-const Sequelize = require('sequelize');
 const secretKey = process.env.secretKey;
+const IAM_USER_KEY = process.env.IAM_USER_KEY;
+const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
+const AWS = require('aws-sdk');
 require('dotenv').config();
 
 exports.signupPage = (req, res) => {
@@ -41,7 +41,6 @@ exports.login = async (req, res) => {
 
 
 exports.signup = async (req, res) => {
-  console.log(req.body)
   var r = await users.findAll({ where: { Email: req.body.email } })
   if (r[0] == undefined) {
     const salt = await bcrypt.genSalt(10);
@@ -50,11 +49,14 @@ exports.signup = async (req, res) => {
       Email: req.body.email,
       Mobile: req.body.phoneNumber,
       password: await bcrypt.hash(req.body.password, salt)
-    }).then(result => { res.status(200).json({ validate: false }) }).catch(error => { res.status(404).json(error) })
+    }).then(result => {
+      addToGroup(0, result.dataValues.id)
+      res.status(201).json({ validate: false });
+    }).catch(error => { res.status(404).json(error) })
 
   }
   else {
-    res.status(201).json({ message: 'User already exist' })
+    res.status(400).json({ message: 'User already exist' })
   }
 }
 
@@ -64,98 +66,166 @@ jwtToken = (token) => {
 
 exports.addMessage = (req, res) => {
   const token = jwtToken(req.body.token);
+  console.log(req.body);
+  console.log(token);
   messages.create({
     message: req.body.message,
-    userName: token.name,
-    groupName: req.body.groupName,
+    groupId: req.body.groupId,
     userId: token.userId
-  }).then(result => { res.status(200).json({ message: 'success' }) }).catch(result => { res.status(201).json({ error: res }) })
+  }).then(result => { res.status(201).json({ message: 'success' }) }).catch(result => { res.send(result) })
 }
 
-exports.allMessages = async (req, res) => {
-  const allMessages = await messages
-    .findAll({
-      where: {
-        id: { [Sequelize.Op.gt]: req.body.id },
-        groupName: req.body.groupName
-      }
-    });
+exports.allMessages = (req, res) => {
+  // const allMessages =  messages.findAll(
+  //   {
+  //     where: {
+  //       id: { [Sequelize.Op.gt]: req.body.id },
+  //       groupId: req.body.groupId
+  //     }
+  //   });
+
+
   res.status(200).json(allMessages);
 }
 
-exports.allUsers = (req, res) => {
-  users.findAll().then(result => res.status(200).json(result)).catch(result => res.status(201).json(result));
-
+exports.allUsers = async (req, res) => {
+  const token = jwtToken(req.body.token);
+  await findUserInGroup(req.body.groupId).then(r => {
+    if(r.dataValues.adminId == token.userId)
+    {
+      users.findAll().then(result => {
+       res.status(200).json(result)
+      })
+      .catch(result => res.send(result))
+  }
+  else res.status(400).json({msg:'you are not admin'})
+  })
+ 
 }
 
 exports.creatGroup = (req, res) => {
   const token = jwtToken(req.body.token);
-  group.create({
-    userName: token.name,
+  groups.create({
     groupName: req.body.groupName,
-    isAdmin: true,
-    userId: token.userId
-  }).then(result => res.status(200).json({ msg: 'Group created' })).catch(result => res.status(201).json({ error: result }));
+    adminId: token.userId
+  }).then(result => {
+    addToGroup(result.dataValues.id, token.userId)
+  }).then(result => res.status(201).json({ msg: 'Group created' })).catch(result => res.status(400).json({ error: result }));
 }
 
 exports.allGroups = (req, res) => {
-  console.log(req.body)
   const token = jwtToken(req.body.token);
-  group.findAll({
+  users.findAll({
     where: {
-      userName: token.name
-    }
-  }).then(result => res.status(200).json(result)).catch(result => res.status(201).json(result));
+      id: token.userId
+    },
+    include: [{
+      model: groups,
+      through: { attributes: ['userId'] }
+    }]
+  }).then(result => res.status(200).json(result)).catch(result => res.send(result));
 }
 
-findUserInGroup = (userName, groupName) => {
-  return group.findOne({
+findUserInGroup = (groupId) => {
+  return groups.findOne({
     where: {
-      userName: userName,
-      groupName: groupName
+      id: groupId
     }
+  })
+}
+
+addToGroup = (groupId, userId) => {
+  return groupMembers.create({
+    userId: userId,
+    groupId: groupId
   })
 }
 
 exports.addUserToGroup = async (req, res) => {
   const token = jwtToken(req.body.token);
-  await findUserInGroup(token.name, req.body.groupName).then(result => {
-    if (result.dataValues.isAdmin) {
-      findUserInGroup(req.body.userName, req.body.groupName)
-        .then(result => {
-          if (result == null) {
-            group.create({
-              userName: req.body.userName,
-              groupName: req.body.groupName,
-              isAdmin: false,
-            }).then(responce => res.status(200).json(responce))
-          }
-          else res.status(201).json({ msg: "User already added" });
-        });
+  await findUserInGroup(req.body.groupId).then(result => {
+    if (result.dataValues.adminId == token.userId) {
+      addToGroup(req.body.groupId, req.body.userId);
+      res.status(201).json({ msg: 'user added' })
     }
-    else res.status(201).json({ msg: "You are not admin" });
+    else res.status(400).json({ msg: 'You are not admin' })
   });
 }
 
 exports.allGroupUsers = (req, res) => {
- const token = jwtToken(req.body.token);
- group.findAll({
-  where:{
-    groupName:req.body.groupName
-  },
-  attributes:['userName']
- }).then(result => res.json(result))
+  const token = jwtToken(req.body.token);
+
+  groups.findAll({
+    where: { id: req.body.groupId },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"]
+    },
+    include: [{
+      model: users,
+      through: { attributes: [] },
+      attributes: ['id', 'Name']
+    },
+    {
+      model: messages,
+      attributes: ['id', 'message'],
+      include: [{
+        model: users,
+        attributes: ['Name']
+      }],
+      order: [['createdAt', 'DESC']],
+      separate: true,
+      limit: 15
+    }
+    ]
+  }).then(result => res.status(200).json(result));
 }
 
-exports.removeUser = async (req, res)=> {
-const token = jwtToken(req.body.token);
-const admin = await findUserInGroup(token.name, req.body.groupName);
-if(admin.dataValues.isAdmin){
-  group.destroy({
-    where:{
-      groupName:req.body.groupName,
-      userName:req.body.userName
-    }
-  }).then(result => res.status(200).json({msg:'deleted'}))}
-  else res.json({msg:'you are not admin'})
+exports.removeUser = async (req, res) => {
+  const token = jwtToken(req.body.token);
+  const admin = await findUserInGroup(req.body.groupId);
+  if (admin.dataValues.adminId == token.userId && req.body.userId !== token.user) {
+    groupMembers.destroy({
+      where: {
+        groupId: admin.id,
+        userId: req.body.userId
+      }
+    }).then(result => res.json(result))
+  }
+  else res.status(400).json({ msg: 'you are not admin' })
 }
+
+
+exports.upload = (req, res) => {
+  const link = uploadToS3(req.files.file.data, req.files.file.name)
+  console.log(link)
+
+  async function uploadToS3(data, filename) {
+
+    let s3bucket = new AWS.S3({
+      accessKeyId: IAM_USER_KEY,
+      secretAccessKey: IAM_USER_SECRET,
+
+    });
+
+    var params = {
+      Bucket: "aniketgroupchatapp",
+      Key: filename,
+      Body: data,
+      ACL: 'public-read'
+    }
+    s3bucket.upload(params, (err, r) => {
+      if (err) res.status(400).json("Something wrong!", err);
+      else {
+        console.log('Succesfully uploaded');
+
+        res.status(201).json({ link: r.Location })
+      }
+
+    })
+
+  }
+
+}
+
+
+

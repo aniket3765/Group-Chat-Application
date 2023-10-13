@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 const router = require('./route/router');
 const users = require('./models/users');
 const messages = require('./models/messages');
-const groupMembers = require('./models/groupMembers');
+const groups = require('./models/groups');
+const groupMembers = require('./models/groupMembers')
 const sequelize = require('./util/database');
 const cors = require('cors');
+const { group } = require('console');
 const server = require('http').createServer(app)
 const io = require('socket.io')(server);
 
@@ -28,8 +30,19 @@ app.use(express.static('public'));
 users.hasMany(messages);
 messages.belongsTo(users);
 
-users.hasMany(groupMembers);
-groupMembers.belongsTo(users);
+
+groups.hasMany(messages);
+messages.belongsTo(groups)
+
+users.belongsToMany(groups,{
+    through: groupMembers,
+  foreignKey: "userId",
+});
+groups.belongsToMany(users,{
+    through: groupMembers,
+  foreignKey: "groupId",
+});
+
 
 
 

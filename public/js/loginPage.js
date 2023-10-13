@@ -14,7 +14,8 @@ function login() {
   axios.post('/login', { name: name.value, password: password.value })
     .then(res => {
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('currentGroupName', 'commonGroup');
+      localStorage.setItem('currentGroupId', 1);
+      localStorage.setItem('user',name.value)
       window.location.href = `${window.location.origin}/home`;
     }).catch(res => {
       if (res.response.status == 404) return alert('Incorrect Username');

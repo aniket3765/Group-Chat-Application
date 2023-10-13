@@ -12,9 +12,9 @@ body{
 
 #inputBlock {
   margin: auto;
-    margin-right: 10px;
-    width: 50%;
-  height: 40px;
+    margin-right: 0px;
+    width: fit-content;
+  height: fit-content;
 }
 #messageBlock {
     box-shadow: #ccc 0px 4px 12px;
@@ -30,8 +30,16 @@ display: none;
 }
 
 
+a{
+  color: white;
+}
+hr{
+  background-color: white;
+  color: white;
+}
 
 #send{
+  margin: auto;
     height: 30px;
     border-radius:10px ;
     background-color: #385E3C;
@@ -46,12 +54,23 @@ display: none;
   margin-left:60% ;
 }
 
+#chat::-webkit-scrollbar {
+  display: none;
+}
+
+#chat {
+  list-style-position: inside;
+  overflow-y: scroll;
+  height: 450px;
+  color: white;
+}
+
 input[type=submit]{
   width:100%;
   height:50px
 }
 
-#groupBlock, #userBlock{
+#groupBlock{
   background-color:  #385E3C;;
   width: 40%;
   height: 500px;
@@ -62,4 +81,7 @@ input[type=submit]{
   margin-top:-500px ;
   position: fixed;
   display: none;
+  width: 40%;
+  height: 500px;
+  color: white;
 }

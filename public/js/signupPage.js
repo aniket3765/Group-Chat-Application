@@ -11,7 +11,7 @@ function createUser() {
     if (name.value == '' || email.value == "" || phoneNumber.value == "" || password.value == "") return alert("Enter details")
     axios.post('/creatUser', { name: name.value, email: email.value, phoneNumber: phoneNumber.value, password: password.value })
         .then(res => {
-            if (res.status == 200) alert('User created')
-            else alert('User already exist')
-        }).catch(res => console.log(res))
+            if (res.status == 201) window.location = window.location.origin;
+            alert('user created')
+        }).catch(res => alert(res.response.data.message))
 }
