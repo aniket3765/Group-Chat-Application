@@ -11,6 +11,7 @@
 <body>
     <div class="mainBlock">
         <div id="groupBlock">
+           
             <div id="groups">
             </div>
         </div>
@@ -22,21 +23,29 @@
             <button type="button" id="close"> close</button>
         </div>
         <div id="groupUsers"></div>
+        <div id = 'inputtwo'>
         <button id="newGroup">Create Group</button>
         <button id="groupList">Groups</button>
         <button type="button" id="logout"> Log Out</button>
+    </div>
         <div id="chatBlock">
-            <div id="userEdit"></div>
+            <label></label>
+            <div id="userEdit">
+                <input id="addUserButton" type="button" value="Add User">
+                <input id="removeUserButton" type="button" value="Remove User">
+                <input id="deleteGroup" type="button" value="Delete Group">
+            </div>
             <div id="chat">
             </div>
+            <div id="inputBlock" >
+                <input type="text" id="messageBlock" placeholder="type message here">
+                <button id="send">Send</button>
+                    <input type="file" enctype="multipart/form-data" name="image" />
+                    <button id='upload' type="submit" >Upload</button>
+    
+            </div>
         </div>
-        <div id="inputBlock" >
-            <input type="text" id="messageBlock" placeholder="type message here">
-            <button id="send">Send</button>
-                <input type="file" enctype="multipart/form-data" name="image" />
-                <button id='upload' type="submit" >Upload</button>
-
-        </div>
+        
     </div>
 
 </body>

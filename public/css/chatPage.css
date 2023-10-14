@@ -5,23 +5,23 @@ body{
 .mainBlock{
   width: 100%;
   height: 550px;
-  background-color: #ccc;
   display: inline-block;
   
 }
 
 #inputBlock {
-  margin: auto;
-    margin-right: 0px;
-    width: fit-content;
+ padding: 10px;
+  width: fit-content;
   height: fit-content;
+  background-color: #385E3C;
+  color: white;
 }
 #messageBlock {
-    box-shadow: #ccc 0px 4px 12px;
-    resize: both;
-    border-radius:10px ;
-    width: 50%;
-    height: 25px;
+  background-color: white;
+  color: #385E3C;
+    border-radius:5px ;
+    width: 70%;
+    height: 30px;
     align-items: baseline;
 }
 
@@ -29,14 +29,33 @@ body{
 display: none;
 }
 
+input,button{
+  background-color: #385E3C;
+  border-radius: 5px;
+  color: white;
+}
+input,button:hover{
+  background-color: white ;
+  color: #385E3C;
+  
+}
+#inputtwo{
+  background-color: #385E3C;
+ width:40%;
+  color: white;
+}
 
-a{
+p,a{
+  margin: 10px;
+  background-color: #385E3C;
   color: white;
+  height: 50px;
+  width: fit-content;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border-radius: 5px;
+  
 }
-hr{
-  background-color: white;
-  color: white;
-}
+
 
 #send{
   margin: auto;
@@ -48,38 +67,59 @@ hr{
 
 #chatBlock{
   width: 40%;
-  height: 500px;
-  background-color:  #385E3C;;
-  margin-top: -522px;
+  height: 400px;
+  background-color:  #385E3C;
+  margin-top: -572px;
   margin-left:60% ;
 }
 
-#chat::-webkit-scrollbar {
+#chat::-webkit-scrollbar,#groups::-webkit-scrollbar {
   display: none;
 }
 
 #chat {
   list-style-position: inside;
   overflow-y: scroll;
-  height: 450px;
+  margin-top: 30px;
+  height: 440px;
   color: white;
+  background-color: whitesmoke;
+}
+
+#groups{
+  list-style-position: inside;
+  overflow-y: scroll;
+  height: 400px;
 }
 
 input[type=submit]{
   width:100%;
-  height:50px
+  height:50px;
+  background-color: #385E3C;
+  color: white;
 }
+label {
+ 
+  background-color: #385E3C;
+  color: white;
+  font-size: x-large;
+}
+input[type=submit]:hover{
+  background-color: white;
+  color: #385E3C;
+}
+
 
 #groupBlock{
   background-color:  #385E3C;;
   width: 40%;
-  height: 500px;
+  height: 550px;
   color: white;
 }
 #userBlock, #groupUsers{
   background-color:  #385E3C;;
   margin-top:-500px ;
-  position: fixed;
+  position: relative;
   display: none;
   width: 40%;
   height: 500px;

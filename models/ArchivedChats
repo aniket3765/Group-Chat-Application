@@ -1,0 +1,11 @@
+const Sequelize = require("sequelize");
+const sequelize = require('../util/database');
+
+const ArchivedChats = sequelize.define('ArchivedChats',{
+    message:{
+        type:Sequelize.STRING,
+        allowNull:true
+    }
+})
+
+module.exports = ArchivedChats;

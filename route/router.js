@@ -16,7 +16,6 @@ router.post('/creatUser',controller.signup);
 router.post('/login',controller.login);
 router.get('/home',controller.chatPage);
 router.post('/addMessage',controller.addMessage);
-router.post('/allMessages',controller.allMessages);
 router.post('/allUsers',controller.allUsers);
 router.post('/createGroup',controller.creatGroup);
 router.post('/allGroups',controller.allGroups);
@@ -24,6 +23,7 @@ router.post('/addUserToGroup',controller.addUserToGroup);
 router.post('/allGroupUsers',controller.allGroupUsers);
 router.post('/removeUser',controller.removeUser);
 router.post('/upload', controller.upload);
+router.delete('/deleteGroup',controller.deleteGroup)
 
 
 
